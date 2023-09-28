@@ -28,6 +28,7 @@ class Blockchain {
     constructor(){
         this.chain = [new Block(Date.now().toString())];
         this.difficulty = 1;
+        this.blockTime = 30000;
     }
 
     getLastBlock(){
@@ -41,6 +42,8 @@ class Blockchain {
         block.mine(this.difficulty);
 
         this.chain.push(block);
+
+        this.difficulty += Date.now() - parseInt(this.getLastBlock().timestamp) < this.blockTime ? 1 : -1;
     }
 
     // Validation
@@ -67,6 +70,4 @@ latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om 2"]));
 
 // latihanChain.chain[1].data = "data changed"; // .isValid() will return false
 console.info(latihanChain.isValid());
-console.info(latihanChain.chain);
-
-difficult = 1;
+console.info(latihanChain);
