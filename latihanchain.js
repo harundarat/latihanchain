@@ -68,6 +68,6 @@ latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om"]));
 latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om 1"]));
 latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om 2"]));
 
-// latihanChain.chain[1].data = "data changed"; // .isValid() will return false
+// latihanChain.chain[1].data = "data changed"; // .isValid() will return false because data changed.
 console.info(latihanChain.isValid());
 console.info(latihanChain);
