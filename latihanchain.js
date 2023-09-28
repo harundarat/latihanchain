@@ -8,10 +8,18 @@ class Block {
         this.data = data;
         this.hash = this.getHash();
         this.prevHash = "";
+        this.nonce = 0;
     }
 
     getHash() {
-        return SHA256(JSON.stringify(this.data) + this.timestamp + this.prevHash);
+        return SHA256(JSON.stringify(this.data) + this.timestamp + this.prevHash + this.nonce);
+    }
+
+    mine(difficult) {
+        while (!this.hash.startsWith(Array(difficult + 1).join("0"))) {
+            this.nonce++;
+            this.hash = this.getHash();
+        }
     }
 }
 
@@ -19,6 +27,7 @@ class Block {
 class Blockchain {
     constructor(){
         this.chain = [new Block(Date.now().toString())];
+        this.difficulty = 1;
     }
 
     getLastBlock(){
@@ -28,6 +37,8 @@ class Blockchain {
     addBlock(block){
         block.prevHash = this.getLastBlock().hash;
         block.hash = block.getHash();
+
+        block.mine(this.difficulty);
 
         this.chain.push(block);
     }
@@ -51,7 +62,11 @@ class Blockchain {
 
 const latihanChain = new Blockchain();
 latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om"]));
+latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om 1"]));
+latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om 2"]));
 
-// latihanChain.chain[1].data = "data changed"; // .isValid() will be false
+// latihanChain.chain[1].data = "data changed"; // .isValid() will return false
 console.info(latihanChain.isValid());
 console.info(latihanChain.chain);
+
+difficult = 1;
