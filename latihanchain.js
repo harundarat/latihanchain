@@ -31,8 +31,27 @@ class Blockchain {
 
         this.chain.push(block);
     }
+
+    // Validation
+    isValid(blockchain = this) {
+        for (let i = 1; i < blockchain.chain.length; i++) {
+            const currentBlock = blockchain.chain[i];
+            const prevBlock = blockchain.chain[i-1];
+
+            if (currentBlock.hash !== currentBlock.getHash() || currentBlock.prevHash !== prevBlock.hash ) {
+                return false;
+            }
+            
+        }
+
+        return true;
+    }
+
 }
 
 const latihanChain = new Blockchain();
 latihanChain.addBlock(new Block(Date.now().toString(), ["Hello Om"]));
-console.log(latihanChain.chain);
+
+// latihanChain.chain[1].data = "data changed"; // .isValid() will be false
+console.info(latihanChain.isValid());
+console.info(latihanChain.chain);
